@@ -47,11 +47,44 @@ public class BatalhaService implements BatalhaResourcePort {
         //envia objeto que vai para ARENA
 
         //retorna protocolo
-        return new JogoResponse(protocolo, "Jogo iniciado");
+        return new JogoResponse(protocolo, "Jogo começou");
+    }
+
+    @Override
+    public JogoResponse criarJogadaDoisJogadores(DoisJogadores doisJogadores) {
+
+        //consulta idJogo redis
+        DoisJogadores doisJogadoresCache = cacheDBPort.buscarPorIdJogo(doisJogadores.getIdJogo()).orElse(null);
+        if(doisJogadoresCache != null ) {
+            Batalha batalha = new Batalha();
+            batalha.setProtocolo(doisJogadoresCache.getProtocoloId());
+            //busca personagem1 (webclient API avenger ou API viloes)
+            batalha.setPersonagem1(preenchePersonagem(doisJogadoresCache.getTipoPersonagem(), doisJogadoresCache.getApelidoLutador(),
+                    doisJogadoresCache.getArtefatoEnumJogador()));
+            //busca personagem2 (webclient API avenger ou API viloes)
+            batalha.setPersonagem2(preenchePersonagem(doisJogadores.getTipoPersonagem(), doisJogadores.getApelidoLutador(),
+                    doisJogadores.getArtefatoEnumJogador()));
+            //Envia objeto para Arena
+            //TODO
+            //retorna protocolo - mensagem = "Jogo começou"
+            return new JogoResponse(doisJogadoresCache.getProtocoloId(), "Jogo começou");
+        } else {
+            //se não existir gera e salva o protocolo no jogo
+            String protocolo = GeradorProtocolo.gerarProtocolo();
+            doisJogadores.setProtocoloId(protocolo);
+            //salva objeto DoisJogadoresDTO no redis
+            cacheDBPort.salvar(doisJogadores.getIdJogo(), doisJogadores);
+            //retorna protocolo - mensagem = "Aguardando o outro jogador..."
+            return new JogoResponse(protocolo, "Aguardando o outro jogador...");
+        }
+    }
+
+    private String gerarNumeroProtocolo(){
+        return GeradorProtocolo.gerarProtocolo();
     }
 
     private Personagem preenchePersonagem(TipoPersonagemEnum tipoPersonagemEnum, String apelido,
-                                     ArtefatoEnum artefatoEnum) {
+                                          ArtefatoEnum artefatoEnum) {
 
         Personagem personagem = (carregar(tipoPersonagemEnum, apelido));
         //atribui artefato (se houver)
@@ -62,28 +95,6 @@ public class BatalhaService implements BatalhaResourcePort {
                             artefatoEnum.getForcaDefesa()));
         }
         return personagem;
-    }
-
-    @Override
-    public JogoResponse criarJogadaDoisJogadores(DoisJogadores doisJogadores) {
-
-        //consulta idJogo redis
-        //se existir
-                //traz objeto DoisJogadoresDTO do redis
-                //busca personagem1 (webclient API avenger ou API viloes)
-                //atribui artefato (se houver)
-                //busca personagem2 (webclient API avenger ou API viloes)
-                //atribui artefato (se houver)
-                //monta objeto que vai para ARENA e envia via kafka
-                //retorna protocolo - mensagem = "Jogo começou"
-        //se não existir
-                //salva objeto DoisJogadoresDTO no redis
-                //retorna protocolo - mensagem = "Aguardando o outro jogador..."
-        return null;
-    }
-
-    private String gerarNumeroProtocolo(){
-        return GeradorProtocolo.gerarProtocolo();
     }
 
     private Personagem carregar(TipoPersonagemEnum tipoPersonagem, String apelido) {

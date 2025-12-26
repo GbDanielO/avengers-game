@@ -27,14 +27,14 @@ public class AvengerResource{
                 .stream().map(AvengerDTO::getInstanceFrom).toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<AvengerDTO> findById(@PathVariable Long id) {
         // não da null pointer pois estou lançando a exceção no serviço caso não encontre
         // e usando GlobalExcpetionHandler no projeto
         return ResponseEntity.ok(AvengerDTO.getInstanceFrom(avengerResourcePort.findById(id)));
     }
 
-    @GetMapping("/{apelido}")
+    @GetMapping("/personagem/{apelido}")
     public ResponseEntity<AvengerDTO> findByApelido(@PathVariable String apelido){
         return ResponseEntity.ok(AvengerDTO.getInstanceFrom(avengerResourcePort.findByApelido(apelido)));
     }

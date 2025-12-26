@@ -21,7 +21,7 @@ public class ViloesClientAdapter implements ViloesClientPort {
     @Override
     public Personagem buscarPorApelido(String apelido) {
         PersonagemDTO personagemDTO = restClient.get()
-                .uri("/api/v1/viloes/{apelido}", apelido)
+                .uri("/api/v1/viloes/personagem/{apelido}", apelido)
                 .retrieve()
                 .body(PersonagemDTO.class);
         return Personagem.getInstanceFrom(personagemDTO);

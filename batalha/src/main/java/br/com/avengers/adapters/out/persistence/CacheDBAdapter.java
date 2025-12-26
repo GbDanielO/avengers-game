@@ -18,10 +18,10 @@ public class CacheDBAdapter implements CacheDBPort {
     @Value("${jogo.tempo-max-espera}")
     private Integer tempo;
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, DoisJogadores> redisTemplate;
 
     @Autowired
-    public CacheDBAdapter(RedisTemplate<String, Object> redisTemplate) {
+    public CacheDBAdapter(RedisTemplate<String, DoisJogadores> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -33,8 +33,8 @@ public class CacheDBAdapter implements CacheDBPort {
 
     @Override
     public Optional<DoisJogadores> buscarPorIdJogo(String idJogo) {
-        Object obj = redisTemplate.opsForValue().get(PREFIX + idJogo);
-        return Optional.ofNullable((DoisJogadores) obj);
+        DoisJogadores doisJogadores = redisTemplate.opsForValue().get(PREFIX + idJogo);
+        return Optional.ofNullable(doisJogadores);
     }
 
     @Override

@@ -27,14 +27,14 @@ public class ViloesResource {
                 .stream().map(ViloesDTO::getInstanceFrom).toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<ViloesDTO> findById(@PathVariable Long id) {
         // não da null pointer pois estou lançando a exceção no serviço caso não encontre
         // e usando GlobalExcpetionHandler no projeto
         return ResponseEntity.ok(ViloesDTO.getInstanceFrom(viloesResourcePort.findById(id)));
     }
 
-    @GetMapping("/{apelido}")
+    @GetMapping("/personagem/{apelido}")
     public ResponseEntity<ViloesDTO> findByApelido(@PathVariable String apelido) {
         // não da null pointer pois estou lançando a exceção no serviço caso não encontre
         // e usando GlobalExcpetionHandler no projeto
