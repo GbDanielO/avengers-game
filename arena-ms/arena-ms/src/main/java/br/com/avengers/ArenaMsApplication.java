@@ -6,10 +6,10 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @EnableKafka
 @SpringBootApplication
-public class AvengersApplication {
+public class ArenaMsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AvengersApplication.class, args);
+		SpringApplication.run(ArenaMsApplication.class, args);
 	}
 
 }

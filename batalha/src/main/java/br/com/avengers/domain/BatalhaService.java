@@ -1,11 +1,13 @@
 package br.com.avengers.domain;
 
 import br.com.avengers.domain.enums.ArtefatoEnum;
+import br.com.avengers.domain.enums.StatusEnum;
 import br.com.avengers.domain.enums.TipoPersonagemEnum;
 import br.com.avengers.domain.model.*;
 import br.com.avengers.ports.in.BatalhaResourcePort;
 import br.com.avengers.ports.out.AvengersClientPort;
 import br.com.avengers.ports.out.CacheDBPort;
+import br.com.avengers.ports.out.MessagePort;
 import br.com.avengers.ports.out.ViloesClientPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,17 @@ public class BatalhaService implements BatalhaResourcePort {
     private final CacheDBPort cacheDBPort;
     private final AvengersClientPort avengersClientPort;
     private final ViloesClientPort viloesClientPort;
+    private final MessagePort messagePort;
+
+
+    private final String topico = "batalha";
 
     @Autowired
-    public BatalhaService(CacheDBPort cacheDBPort, AvengersClientPort avengersClientPort, ViloesClientPort viloesClientPort) {
+    public BatalhaService(CacheDBPort cacheDBPort, AvengersClientPort avengersClientPort, ViloesClientPort viloesClientPort, MessagePort messagePort) {
         this.cacheDBPort = cacheDBPort;
         this.avengersClientPort = avengersClientPort;
         this.viloesClientPort = viloesClientPort;
+        this.messagePort = messagePort;
     }
 
     //TODO vai buscar no MongoDB
@@ -45,6 +52,7 @@ public class BatalhaService implements BatalhaResourcePort {
         batalha.setPersonagem2(preenchePersonagem(umJogador.getTipoPersonagem2(), umJogador.getApelidoLutador2(),
                 umJogador.getArtefatoEnumJogador2()));
         //envia objeto que vai para ARENA
+        messagePort.enviarMensagem(topico, batalha);
 
         //retorna protocolo
         return new JogoResponse(protocolo, "Jogo começou");
@@ -65,7 +73,7 @@ public class BatalhaService implements BatalhaResourcePort {
             batalha.setPersonagem2(preenchePersonagem(doisJogadores.getTipoPersonagem(), doisJogadores.getApelidoLutador(),
                     doisJogadores.getArtefatoEnumJogador()));
             //Envia objeto para Arena
-            //TODO
+            messagePort.enviarMensagem(topico, batalha);
             //retorna protocolo - mensagem = "Jogo começou"
             return new JogoResponse(doisJogadoresCache.getProtocoloId(), "Jogo começou");
         } else {
@@ -94,6 +102,8 @@ public class BatalhaService implements BatalhaResourcePort {
                             artefatoEnum.getForcaAtaque(),
                             artefatoEnum.getForcaDefesa()));
         }
+        //o status do cadastro se refere a situação no MCU, aqui fica ativo
+        personagem.setStatusEnum(StatusEnum.ATIVO);
         return personagem;
     }
 
