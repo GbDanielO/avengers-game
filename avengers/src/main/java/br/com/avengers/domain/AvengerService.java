@@ -4,7 +4,7 @@ import br.com.avengers.adapters.out.persistence.entity.Avenger;
 import br.com.avengers.ports.in.AvengerResourcePort;
 import br.com.avengers.ports.out.AvengerRepositoryPort;
 import br.com.avengers.shared.NegocioException;
-import jakarta.persistence.Transient;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -38,19 +38,19 @@ public class AvengerService implements AvengerResourcePort {
         return avengerRepositoryPort.findByApelido(apelido);
     }
 
-    @Transient
+    @Transactional
     @Override
     public Avenger update(Avenger avenger) {
         return avengerRepositoryPort.update(avenger);
     }
 
-    @Transient
+    @Transactional
     @Override
     public Avenger create(Avenger avenger) {
         return avengerRepositoryPort.create(avenger);
     }
 
-    @Transient
+    @Transactional
     @Override
     public List<Avenger> create(List<Avenger> avengers) {
         List<Avenger> avengerSalvos = new ArrayList<>();
@@ -61,6 +61,7 @@ public class AvengerService implements AvengerResourcePort {
         return avengerSalvos;
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         avengerRepositoryPort.delete(id);

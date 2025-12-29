@@ -1,5 +1,6 @@
 package br.com.avengers.adapters.in.web;
 
+import br.com.avengers.adapters.dto.BatalhaResultadoDTO;
 import br.com.avengers.adapters.in.web.dto.DoisJogadoresDTO;
 import br.com.avengers.domain.model.DoisJogadores;
 import br.com.avengers.domain.model.JogoResponse;
@@ -22,12 +23,11 @@ public class BatalhaResource {
         this.batalhaResourcePort = batalhaResourcePort;
     }
 
-    //TODO trazer batalha do MongoDB
     @GetMapping("/{protocoloId}")
-    public ResponseEntity<Batalha> findById(@PathVariable String protocoloId) {
+    public ResponseEntity<BatalhaResultadoDTO> findById(@PathVariable String protocoloId) {
         // não da null pointer pois estou lançando a exceção no serviço caso não encontre
         // e usando GlobalExcpetionHandler no projeto
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(batalhaResourcePort.findById(protocoloId));
     }
 
     @PostMapping("/um-jogador")

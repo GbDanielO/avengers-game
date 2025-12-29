@@ -5,6 +5,7 @@ import br.com.avengers.ports.in.ViloesResourcePort;
 import br.com.avengers.ports.out.ViloesRepositoryPort;
 import br.com.avengers.shared.NegocioException;
 import jakarta.persistence.Transient;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -39,12 +40,13 @@ public class ViloesService implements ViloesResourcePort {
                 .orElseThrow(() -> new NegocioException("Vilão não encontrado apelido: " + apelido, HttpStatus.BAD_REQUEST));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         viloesRepositoryPort.delete(id);
     }
 
-    @Transient
+    @Transactional
     @Override
     public List<Vilao> create(List<Vilao> viloes) {
         List<Vilao> viloesSalvos = new ArrayList<>();
@@ -55,13 +57,13 @@ public class ViloesService implements ViloesResourcePort {
         return viloesSalvos;
     }
 
-    @Transient
+    @Transactional
     @Override
     public Vilao update(Vilao vilao) {
         return viloesRepositoryPort.update(vilao);
     }
 
-    @Transient
+    @Transactional
     @Override
     public Vilao create(Vilao vilao) {
         return viloesRepositoryPort.create(vilao);

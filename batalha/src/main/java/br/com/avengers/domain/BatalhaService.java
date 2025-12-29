@@ -1,16 +1,19 @@
 package br.com.avengers.domain;
 
+import br.com.avengers.adapters.dto.BatalhaResultadoDTO;
 import br.com.avengers.domain.enums.ArtefatoEnum;
 import br.com.avengers.domain.enums.StatusEnum;
 import br.com.avengers.domain.enums.TipoPersonagemEnum;
 import br.com.avengers.domain.model.*;
 import br.com.avengers.ports.in.BatalhaResourcePort;
-import br.com.avengers.ports.out.AvengersClientPort;
-import br.com.avengers.ports.out.CacheDBPort;
-import br.com.avengers.ports.out.MessagePort;
-import br.com.avengers.ports.out.ViloesClientPort;
+import br.com.avengers.ports.out.*;
+import br.com.avengers.shared.NegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Optionals;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class BatalhaService implements BatalhaResourcePort {
@@ -19,22 +22,27 @@ public class BatalhaService implements BatalhaResourcePort {
     private final AvengersClientPort avengersClientPort;
     private final ViloesClientPort viloesClientPort;
     private final MessagePort messagePort;
+    private final BatalhaRepositoryPort batalhaRepositoryPort;
 
 
     private final String topico = "batalha";
 
     @Autowired
-    public BatalhaService(CacheDBPort cacheDBPort, AvengersClientPort avengersClientPort, ViloesClientPort viloesClientPort, MessagePort messagePort) {
+    public BatalhaService(CacheDBPort cacheDBPort, AvengersClientPort avengersClientPort, ViloesClientPort viloesClientPort, MessagePort messagePort, BatalhaRepositoryPort batalhaRepositoryPort) {
         this.cacheDBPort = cacheDBPort;
         this.avengersClientPort = avengersClientPort;
         this.viloesClientPort = viloesClientPort;
         this.messagePort = messagePort;
+        this.batalhaRepositoryPort = batalhaRepositoryPort;
     }
 
-    //TODO vai buscar no MongoDB
     @Override
-    public Batalha findById(String protocoloId) {
-        return null;
+    public BatalhaResultadoDTO findById(String protocoloId) {
+        BatalhaResultadoDTO batalhaResultadoDTO = batalhaRepositoryPort.buscarPorProtocolo(protocoloId);
+        if(batalhaResultadoDTO == null) {
+            throw new NegocioException("Protocolo não encontrado. Tente mais tarde ou verifique se está correto.", HttpStatus.BAD_REQUEST);
+        }
+        return batalhaResultadoDTO;
     }
 
     @Override
@@ -74,6 +82,8 @@ public class BatalhaService implements BatalhaResourcePort {
                     doisJogadores.getArtefatoEnumJogador()));
             //Envia objeto para Arena
             messagePort.enviarMensagem(topico, batalha);
+            //remove do cache
+            cacheDBPort.remover(doisJogadoresCache.getIdJogo());
             //retorna protocolo - mensagem = "Jogo começou"
             return new JogoResponse(doisJogadoresCache.getProtocoloId(), "Jogo começou");
         } else {
