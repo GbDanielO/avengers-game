@@ -26,7 +26,7 @@ public class DoisJogadores {
         if(doisJogadoresDTO == null) return null;
 
         return DoisJogadores.builder()
-                    .idJogo(doisJogadoresDTO.getIdJogo())
+                    .idJogo(doisJogadoresDTO.getIdJogo().toUpperCase().trim())
                     .apelidoLutador(doisJogadoresDTO.getApelidoLutador())
                     .tipoPersonagem(doisJogadoresDTO.getTipoPersonagem())
                     .artefatoEnumJogador(doisJogadoresDTO.getArtefatoEnumJogador())

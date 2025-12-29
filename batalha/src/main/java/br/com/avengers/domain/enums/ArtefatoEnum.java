@@ -28,4 +28,5 @@ public enum ArtefatoEnum {
         this.descricao = descricao;
         this.historia = historia;
     }
+
 }
