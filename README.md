@@ -106,7 +106,25 @@ Ao final, o sistema registra:
 - 🏆 Vencedor
 - 💀 Perdedor
 - 📜 Todos os turnos da batalha
-- ✨ Uso (ou falha
+- ✨ Uso (ou falha)
 
+
+## Tecnologias
+
+- Java 17
+- Spring Boot 3.5.8
+- Maven
+- MongoDB
+- Postgres
+- Redis
+- Kafka
+- Docker & Docker Compose 
+
+## Arquitetura e Padrões de Projeto
+
+- Microsserviços
+- API Gateway
+- Port and Adapters
+- Chain of Responsability (Duas implementações, uma mais Java (API Avengers) e a outra usando mais o Spring(API Viloes))
 
 **Desenvolvido por Daniel Oliveira (gbdaniel_rj@hotmail.com)**.

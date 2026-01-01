@@ -1,6 +1,7 @@
 package br.com.avengers.domain;
 
 import br.com.avengers.adapters.out.persistence.entity.Vilao;
+import br.com.avengers.domain.validation.ValidacaoChain;
 import br.com.avengers.ports.in.ViloesResourcePort;
 import br.com.avengers.ports.out.ViloesRepositoryPort;
 import br.com.avengers.shared.NegocioException;
@@ -17,10 +18,12 @@ import java.util.List;
 public class ViloesService implements ViloesResourcePort {
 
     private final ViloesRepositoryPort viloesRepositoryPort;
+    private final ValidacaoChain validacaoChain;
 
     @Autowired
-    public ViloesService(ViloesRepositoryPort viloesRepositoryPort) {
+    public ViloesService(ViloesRepositoryPort viloesRepositoryPort, ValidacaoChain validacaoChain) {
         this.viloesRepositoryPort = viloesRepositoryPort;
+        this.validacaoChain = validacaoChain;
     }
 
     @Override
@@ -51,6 +54,11 @@ public class ViloesService implements ViloesResourcePort {
     public List<Vilao> create(List<Vilao> viloes) {
         List<Vilao> viloesSalvos = new ArrayList<>();
         for(Vilao v: viloes){
+            /**
+             * Para o meu negócio, deixei no caso de lista:  salva tudo ou nada.
+             * Poderia fazer salvar os que estão certos e descartar os outros.
+             */
+            validacaoChain.valida(v);
             v = viloesRepositoryPort.create(v);
             viloesSalvos.add(v);
         }
@@ -60,12 +68,14 @@ public class ViloesService implements ViloesResourcePort {
     @Transactional
     @Override
     public Vilao update(Vilao vilao) {
+        validacaoChain.valida(vilao);
         return viloesRepositoryPort.update(vilao);
     }
 
     @Transactional
     @Override
     public Vilao create(Vilao vilao) {
+        validacaoChain.valida(vilao);
         return viloesRepositoryPort.create(vilao);
     }
 }

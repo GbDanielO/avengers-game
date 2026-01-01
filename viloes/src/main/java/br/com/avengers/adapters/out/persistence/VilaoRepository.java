@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface VilaoRepository extends JpaRepository<Vilao, Long> {
 
-    public Optional<Vilao> findByApelido(String apelido);
+    public Optional<Vilao> findByApelidoIgnoreCase(String apelido);
 }

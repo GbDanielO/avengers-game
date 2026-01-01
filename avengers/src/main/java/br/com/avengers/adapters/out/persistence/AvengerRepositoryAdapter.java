@@ -35,7 +35,7 @@ public class AvengerRepositoryAdapter implements AvengerRepositoryPort {
 
     @Override
     public Avenger findByApelido(String apelido) {
-        return avengerRepository.findAvengerByApelido(apelido);
+        return avengerRepository.findByApelidoIgnoreCase(apelido);
     }
 
     @Override

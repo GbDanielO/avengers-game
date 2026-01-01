@@ -25,7 +25,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseError responseError(String message, HttpStatus httpStatusCode){
-        return new ResponseError(message, httpStatusCode.value(), "error");
+        return new ResponseError("error", httpStatusCode.value(), message);
     }
 
     @ExceptionHandler(Exception.class)
@@ -46,5 +46,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBusinessException(NegocioException negocioException, WebRequest request) {
         ResponseError responseError = responseError(negocioException.getMessage(), negocioException.getStatus());
         return handleExceptionInternal(negocioException, responseError, headers(), negocioException.getStatus(), request);
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<Object> handleValidationException(
+            ValidacaoException validacaoException, WebRequest request) {
+
+        return handleExceptionInternal(
+                validacaoException,
+                validacaoException.getErros(),
+                headers(),
+                HttpStatus.BAD_REQUEST,
+                request
+        );
     }
 }

@@ -36,7 +36,7 @@ public class ViloesRepositoryAdapter implements ViloesRepositoryPort {
 
     @Override
     public Optional<Vilao> findByApelido(String apelido) {
-        return vilaoRepository.findByApelido(apelido);
+        return vilaoRepository.findByApelidoIgnoreCase(apelido);
     }
 
     @Override

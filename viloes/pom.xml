@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.avengers</groupId>
 	<artifactId>viloes-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>viloes-api</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -40,7 +40,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>42.7.3</scope>
+            <version>42.7.3</version>
         </dependency>
 
         <dependency>

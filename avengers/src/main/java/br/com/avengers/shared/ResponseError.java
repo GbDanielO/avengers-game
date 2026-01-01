@@ -7,14 +7,23 @@ public class ResponseError {
     private Date timestamp = new Date();
     private String status = "error";
     private int statusCode = 400;
-    private String error;
+    private String mensagem;
 
     public ResponseError(){}
 
-    public ResponseError(String status, int statusCode, String error) {
+    public ResponseError(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public ResponseError(int statusCode, String mensagem) {
+        this.statusCode = statusCode;
+        this.mensagem = mensagem;
+    }
+
+    public ResponseError(String status, int statusCode, String mensagem) {
         this.status = status;
         this.statusCode = statusCode;
-        this.error = error;
+        this.mensagem = mensagem;
     }
 
     public Date getTimestamp() {
@@ -41,11 +50,11 @@ public class ResponseError {
         this.statusCode = statusCode;
     }
 
-    public String getError() {
-        return error;
+    public String getMensagem() {
+        return mensagem;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
     }
 }

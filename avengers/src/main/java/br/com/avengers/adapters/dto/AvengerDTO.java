@@ -24,16 +24,20 @@ public class AvengerDTO {
     @NotBlank(message = "Nome é obrigatório")
     private String nomeReal;
 
+    @NotBlank(message = "Descrição é obrigatório")
     private String descricao;
 
+    @NotBlank(message = "história é obrigatório")
     private String historia;
 
     @NotNull(message = "Idade é obrigatória")
     @Positive(message = "Idade deve ser maior que zero")
     private Integer idade;
 
+    @NotNull(message = "Status é obrigatório")
     private StatusEnum statusEnum = StatusEnum.ATIVO;
 
+    @NotNull(message = "É obrigatório informar as habilidades")
     private HabilidadeDTO habilidade;
     private MagiaDTO magia;
 

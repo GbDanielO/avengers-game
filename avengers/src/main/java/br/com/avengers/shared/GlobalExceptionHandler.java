@@ -1,7 +1,5 @@
 package br.com.avengers.shared;
 
-import jakarta.annotation.Resource;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +10,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.lang.reflect.UndeclaredThrowableException;
-import java.util.Locale;
 
 
 @RestControllerAdvice
@@ -25,7 +22,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseError responseError(String message, HttpStatus httpStatusCode){
-        return new ResponseError(message, httpStatusCode.value(), "error");
+        return new ResponseError("error", httpStatusCode.value(), message);
     }
 
     @ExceptionHandler(Exception.class)
@@ -46,5 +43,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleBusinessException(NegocioException negocioException, WebRequest request) {
         ResponseError responseError = responseError(negocioException.getMessage(), negocioException.getStatus());
         return handleExceptionInternal(negocioException, responseError, headers(), negocioException.getStatus(), request);
+    }
+
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<Object> handleValidationException(ValidacaoException validacaoException, WebRequest request) {
+
+        return handleExceptionInternal(validacaoException, validacaoException.getErrors(),
+                headers(), HttpStatus.BAD_REQUEST, request
+        );
     }
 }

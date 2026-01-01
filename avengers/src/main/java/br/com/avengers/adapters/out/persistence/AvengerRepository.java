@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AvengerRepository extends JpaRepository<Avenger, Long> {
 
-    Avenger findAvengerByApelido(String apelido);
+    Avenger findByApelidoIgnoreCase(String apelido);
 }
