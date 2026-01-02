@@ -14,6 +14,9 @@ Aqui, nem sempre o mais forte vence — cada batalha é uma história única.
 -- Construir frontend
 -- Subir na Nuvem
 
+## Arquitetura
+<img src="https://github.com/GbDanielO/avengers-game/blob/main/Arquitetura.png" width="50%">
+
 ## 👤 Personagens
 
 Cada personagem entra na Arena com os seguintes atributos:
