@@ -196,6 +196,8 @@ services:
       - api-batalha
     networks:
       - avengers-net
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     deploy:
       resources:
         limits:

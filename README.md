@@ -145,6 +145,9 @@ docker compose --env-file ./avenger-dev.env up -d --build
 
 - Intellij Usar:
 
+VM options: -Dspring.profiles.active=dev
+Environment Variables: arquivo .env com seus dados de usuário, senha e outras configurações das tecnologias usadas
+
 
 
 **Desenvolvido por Daniel Oliveira (gbdaniel_rj@hotmail.com)**.

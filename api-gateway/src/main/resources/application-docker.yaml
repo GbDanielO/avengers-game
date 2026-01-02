@@ -1,27 +1,37 @@
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
 spring:
   cloud:
     gateway:
+      default-filters:
+        # mantém headers corretos para swagger e redirects
+        - PreserveHostHeader
       routes:
+        # =========================
+        # API AVENGERS
+        # =========================
         - id: avengers-api
           uri: http://api-avengers:8080
           predicates:
-            - Path=/api/v1/avengers/**
-          filters:
-            - StripPrefix=2
+            - Path=/avengers-api/**
 
+        # =========================
+        # API VILOES
+        # =========================
         - id: viloes-api
           uri: http://api-viloes:8080
           predicates:
-            - Path=/api/v1/viloes/**
-          filters:
-            - StripPrefix=2
+            - Path=/viloes-api/**
 
+        # =========================
+        # API BATALHA
+        # =========================
         - id: batalha-api
           uri: http://api-batalha:8080
           predicates:
-            - Path=/api/v1/batalhas/**
-          filters:
-            - StripPrefix=2
+            - Path=/batalha-api/**

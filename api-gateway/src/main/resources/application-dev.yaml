@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
 spring:
   cloud:
     gateway:
@@ -11,20 +15,14 @@ spring:
         - id: avengers-api
           uri: http://localhost:8085
           predicates:
-            - Path=/api/v1/avengers/**
-          filters:
-            - StripPrefix=2
+            - Path=/avengers-api/**
 
         - id: viloes-api
           uri: http://localhost:8086
           predicates:
-            - Path=/api/v1/viloes/**
-          filters:
-            - StripPrefix=2
+            - Path=/viloes-api/**
 
         - id: batalha-api
           uri: http://localhost:8087
           predicates:
-            - Path=/api/v1/batalhas/**
-          filters:
-            - StripPrefix=2
+            - Path=/batalha-api/**
