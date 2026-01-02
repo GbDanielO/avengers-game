@@ -137,4 +137,14 @@ Ao final, o sistema registra:
 - Chain of Responsability (Duas implementações, uma mais Java (API Avengers) e a outra usando mais o Spring(API Viloes)) aplicado nas validações
 - Testes Unitários
 
+## Instruções de subida
+
+- Docker compose usar:
+
+docker compose --env-file ./avenger-dev.env up -d --build
+
+- Intellij Usar:
+
+
+
 **Desenvolvido por Daniel Oliveira (gbdaniel_rj@hotmail.com)**.
