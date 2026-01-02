@@ -1,8 +1,8 @@
 db = db.getSiblingDB("avengers-game");
 
 db.createUser({
-  user: "app_user",
-  pwd: "Mdb12345",
+  user: process.env.MONGO_USER,
+  pwd: process.env.MONGO_PASSWORD,
   roles: [
     {
       role: "readWrite",

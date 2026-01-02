@@ -4,6 +4,15 @@ Bem-vindo ao **Avengers Game**, um jogo de combate por turnos onde estratégia, 
 Aqui, nem sempre o mais forte vence — cada batalha é uma história única.
 
 ---
+## Noticias
+- O jogo está completamente funcional (backend) subindo tudo em docker-compose.
+- O API Gateway está funcionando
+- Próximos passos possíveis (não estão em ordem):
+-- Implementar o ServiceDiscovery
+-- Implementar o ServiceConfig
+-- Implementar segurança
+-- Construir frontend
+-- Subir na Nuvem
 
 ## 👤 Personagens
 

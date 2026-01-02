@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 @Component
 public class ValidaNome extends AbstractValidador {
 
-    private static final String REGEX_NOME = "^[a-zA-Z0-9À-ÿ\\s\\-\\.\\'\\&,]+$";
+    private static final String REGEX_NOME = "^[a-zA-Z0-9À-ÿ\\s\\-\\.\\'\\&]+$";
     private static final Pattern PATTERN = Pattern.compile(REGEX_NOME);
 
     @Override

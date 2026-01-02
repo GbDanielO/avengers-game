@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - AddRequestHeader=X-Gateway,Avengers-Gateway
+
+      routes:
+        - id: avengers-api
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/avengers/**
+          filters:
+            - StripPrefix=2
+
+        - id: viloes-api
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/viloes/**
+          filters:
+            - StripPrefix=2
+
+        - id: batalha-api
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/batalhas/**
+          filters:
+            - StripPrefix=2

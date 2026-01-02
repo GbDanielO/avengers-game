@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: avengers-api
+          uri: http://api-avengers:8080
+          predicates:
+            - Path=/api/v1/avengers/**
+          filters:
+            - StripPrefix=2
+
+        - id: viloes-api
+          uri: http://api-viloes:8080
+          predicates:
+            - Path=/api/v1/viloes/**
+          filters:
+            - StripPrefix=2
+
+        - id: batalha-api
+          uri: http://api-batalha:8080
+          predicates:
+            - Path=/api/v1/batalhas/**
+          filters:
+            - StripPrefix=2
