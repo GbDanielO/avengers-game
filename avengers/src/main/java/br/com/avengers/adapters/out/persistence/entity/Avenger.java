@@ -5,13 +5,11 @@ import br.com.avengers.adapters.dto.HabilidadeDTO;
 import br.com.avengers.adapters.dto.MagiaDTO;
 import br.com.avengers.domain.enums.StatusEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 
+@Setter
 @Getter
 @Builder
 @Entity

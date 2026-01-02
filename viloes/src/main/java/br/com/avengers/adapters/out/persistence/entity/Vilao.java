@@ -3,13 +3,11 @@ package br.com.avengers.adapters.out.persistence.entity;
 import br.com.avengers.adapters.dto.ViloesDTO;
 import br.com.avengers.domain.enums.StatusEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 
+@Setter
 @Getter
 @Builder
 @Entity

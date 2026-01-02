@@ -120,11 +120,12 @@ Ao final, o sistema registra:
 - Kafka
 - Docker & Docker Compose 
 
-## Arquitetura e Padrões de Projeto
+## Arquitetura e Padrões de Projeto e mais
 
 - Microsserviços
 - API Gateway
 - Port and Adapters
-- Chain of Responsability (Duas implementações, uma mais Java (API Avengers) e a outra usando mais o Spring(API Viloes))
+- Chain of Responsability (Duas implementações, uma mais Java (API Avengers) e a outra usando mais o Spring(API Viloes)) aplicado nas validações
+- Testes Unitários
 
 **Desenvolvido por Daniel Oliveira (gbdaniel_rj@hotmail.com)**.

@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Order(1)
 public class ValidaApelido implements Validador{
 
-    private static final String REGEX_NOME = "^[a-zA-Z0-9À-ÿ\\s\\-\\.\\'\\&]+$";
+    private static final String REGEX_NOME = "^[a-zA-Z0-9À-ÿ\\s\\-\\.\\'\\&,]+$";
     private static final Pattern PATTERN = Pattern.compile(REGEX_NOME);
 
     @Override
