@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS}
+            [%t]
+            %-5level
+            traceId=%X{traceId}
+            %c{1} - %msg%n%throwable
+        </Property>
+    </Properties>
+
+    <Appenders>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+        <!-- Ajuste fino -->
+        <Logger name="br.com.avengers" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>

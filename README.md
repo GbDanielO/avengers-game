@@ -155,36 +155,35 @@ Environment Variables: arquivo .env com seus dados de usuário, senha e outras c
 
 APIs
 
-AVENGERS_API_URL=http://api-avengers:8080/avengers-api
-VILOES_API_URL=http://api-viloes:8080/viloes-api
-
-POSTGRES 
-
-POSTGRES_USER=seu_user
-POSTGRES_PASSWORD=sua_senha
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-
-MONGODB
-
-MONGO_HOST=mongo
-MONGO_PORT=27017
-MONGO_DB=avengers-game
-MONGO_USER=seu_user
-MONGO_PASSWORD=sua_senha
-
-MONGO_URI=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/avengers-game?authSource=avengers-game 
-
-
-REDIS
-
-REDIS_HOST=redis
-REDIS_PORT=6379
-
-KAFKA
-
+AVENGERS_API_URL=http://api-avengers:8080/avengers-api<br />
+VILOES_API_URL=http://api-viloes:8080/viloes-api<br />
+<br />
+POSTGRES <br />
+<br />
+POSTGRES_USER=seu_user<br />
+POSTGRES_PASSWORD=sua_senha<br />
+POSTGRES_HOST=postgres<br />
+POSTGRES_PORT=5432<br />
+<br />
+MONGODB<br />
+<br />
+MONGO_HOST=mongo<br />
+MONGO_PORT=27017<br />
+MONGO_DB=avengers-game<br />
+MONGO_USER=seu_user<br />
+MONGO_PASSWORD=sua_senha<br />
+<br />
+MONGO_URI=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/avengers-game?authSource=avengers-game<br /> 
+<br />
+REDIS<br />
+<br />
+REDIS_HOST=redis<br />
+REDIS_PORT=6379<br />
+<br />
+KAFKA<br />
+<br />
 KAFKA_BOOTSTRAP_SERVERS=kafka:9092
 
-
+<br /><br /><br />
 
 **Desenvolvido por Daniel Oliveira (gbdaniel_rj@hotmail.com)**.

@@ -3,9 +3,12 @@ package br.com.avengers.domain;
 import br.com.avengers.domain.model.Batalha;
 import br.com.avengers.ports.in.MessagePort;
 import br.com.avengers.ports.out.ArenaRepositoryPort;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.CloseableThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 public class ArenaService implements MessagePort {
 
@@ -19,8 +22,12 @@ public class ArenaService implements MessagePort {
     }
 
     @Override
-    public void processaBatalha(Batalha batalha) {
-        Batalha batalhaFinalizada = arenaEngine.execute(batalha);
-        arenaRepositoryPort.salvar(batalhaFinalizada);
+    public void processaBatalha(Batalha batalha, String traceId) {
+        try (var context = CloseableThreadContext.put("traceId", traceId)){
+            log.info("Processando batalha na Arena");
+            Batalha batalhaFinalizada = arenaEngine.execute(batalha);
+            arenaRepositoryPort.salvar(batalhaFinalizada);
+            log.info("Batalha finalizada na Arena");
+        }
     }
 }

@@ -22,17 +22,16 @@ public class ArenaServiceTest {
 
     @Test
     void deveExecutarBatalhaESalvarResultado() {
-        // arrange
+
         Batalha batalhaEntrada = Mockito.mock(Batalha.class);
         Batalha batalhaFinalizada = Mockito.mock(Batalha.class);
 
         Mockito.when(arenaEngine.execute(batalhaEntrada))
                 .thenReturn(batalhaFinalizada);
 
-        // act
-        arenaService.processaBatalha(batalhaEntrada);
+        String traceId = "AVENGERSGAMETESTE";
+        arenaService.processaBatalha(batalhaEntrada, traceId);
 
-        // assert
         Mockito.verify(arenaEngine, Mockito.times(1)).execute(batalhaEntrada);
         Mockito.verify(arenaRepositoryPort, Mockito.times(1)).salvar(batalhaFinalizada);
     }

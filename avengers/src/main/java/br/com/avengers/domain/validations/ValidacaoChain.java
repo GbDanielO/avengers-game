@@ -28,7 +28,6 @@ public class ValidacaoChain {
         validaNome
                 .setProximo(validaApelido)
                 .setProximo(validaDescricao)
-                .setProximo(validaDescricao)
                 .setProximo(validaHistoria);
 
         //registra a cadeia

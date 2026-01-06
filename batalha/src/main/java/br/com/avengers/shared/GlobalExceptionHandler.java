@@ -1,7 +1,6 @@
 package br.com.avengers.shared;
 
-import jakarta.annotation.Resource;
-import org.springframework.context.MessageSource;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,9 +11,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.lang.reflect.UndeclaredThrowableException;
-import java.util.Locale;
 
 
+@Log4j2
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -30,20 +29,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handlerGeral(Exception e, WebRequest request){
-        System.out.println(e.getMessage());
-        e.printStackTrace();
-        if(e.getClass().isAssignableFrom(UndeclaredThrowableException.class)){
-            UndeclaredThrowableException exception = (UndeclaredThrowableException) e;
-            return  handleBusinessException((NegocioException) exception.getUndeclaredThrowable(), request);
-        } else {
-            String message = "Erro interno no Servidor: " + e.getMessage();
-            ResponseError responseError = responseError(message, HttpStatus.INTERNAL_SERVER_ERROR);
-            return handleExceptionInternal(e, responseError, headers(), HttpStatus.INTERNAL_SERVER_ERROR, request);
-        }
+
+        log.error("Erro interno no Servidor", e);
+
+        ResponseError responseError = responseError("Erro interno no Servidor. ", HttpStatus.INTERNAL_SERVER_ERROR);
+        return handleExceptionInternal(e, responseError, headers(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler(NegocioException.class)
     public ResponseEntity<Object> handleBusinessException(NegocioException negocioException, WebRequest request) {
+
+        log.warn("Erro de negócio: {}", negocioException.getMessage());
+
         ResponseError responseError = responseError(negocioException.getMessage(), negocioException.getStatus());
         return handleExceptionInternal(negocioException, responseError, headers(), negocioException.getStatus(), request);
     }

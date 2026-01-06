@@ -17,6 +17,10 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Deixei o kafka o mais genérico possível, acertando o parse final no Adapter.
+ * Bom para ler de mais de um tópico caso preciso.
+ */
 @Configuration
 public class KafkaConsumerConfig {
 

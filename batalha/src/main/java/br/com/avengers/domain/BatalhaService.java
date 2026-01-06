@@ -8,10 +8,12 @@ import br.com.avengers.domain.model.*;
 import br.com.avengers.ports.in.BatalhaResourcePort;
 import br.com.avengers.ports.out.*;
 import br.com.avengers.shared.NegocioException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 public class BatalhaService implements BatalhaResourcePort {
 
@@ -44,6 +46,9 @@ public class BatalhaService implements BatalhaResourcePort {
 
     @Override
     public JogoResponse criarJogadaUmJogador(UmJogador umJogador) {
+
+        log.info("Criando jogo");
+
         Batalha batalha = new Batalha();
 
         //gera protocolo
@@ -57,6 +62,7 @@ public class BatalhaService implements BatalhaResourcePort {
         batalha.setPersonagem2(preenchePersonagem(umJogador.getTipoPersonagem2(), umJogador.getApelidoLutador2(),
                 umJogador.getArtefatoEnumJogador2()));
         //envia objeto que vai para ARENA
+        log.info("Enviando para a Arena");
         messagePort.enviarMensagem(topico, batalha);
 
         //retorna protocolo
@@ -69,6 +75,7 @@ public class BatalhaService implements BatalhaResourcePort {
         //consulta idJogo redis
         DoisJogadores doisJogadoresCache = cacheDBPort.buscarPorIdJogo(doisJogadores.getIdJogo()).orElse(null);
         if(doisJogadoresCache != null ) {
+            log.info("Criando jogo");
             Batalha batalha = new Batalha();
             batalha.setProtocolo(doisJogadoresCache.getProtocoloId());
             //busca personagem1 (webclient API avenger ou API viloes)
@@ -78,6 +85,7 @@ public class BatalhaService implements BatalhaResourcePort {
             batalha.setPersonagem2(preenchePersonagem(doisJogadores.getTipoPersonagem(), doisJogadores.getApelidoLutador(),
                     doisJogadores.getArtefatoEnumJogador()));
             //Envia objeto para Arena
+            log.info("Enviando para a Arena");
             messagePort.enviarMensagem(topico, batalha);
             //remove do cache
             cacheDBPort.remover(doisJogadoresCache.getIdJogo());

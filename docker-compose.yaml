@@ -90,6 +90,12 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+#     Em ambientes de desenvolvimento com apenas um broker, o Kafka 4.0 tenta criar esse tópico
+#     com um fator de replicação padrão de 3, o que falha repetidamente em um cluster de 1 nó
+#     Então usar essas configs em DEV
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     deploy:
       resources:
         limits:
