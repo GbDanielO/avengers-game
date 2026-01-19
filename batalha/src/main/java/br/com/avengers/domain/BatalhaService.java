@@ -5,6 +5,8 @@ import br.com.avengers.domain.enums.ArtefatoEnum;
 import br.com.avengers.domain.enums.StatusEnum;
 import br.com.avengers.domain.enums.TipoPersonagemEnum;
 import br.com.avengers.domain.model.*;
+import br.com.avengers.domain.validation.ValidaDoisJogadores;
+import br.com.avengers.domain.validation.ValidaUmJogador;
 import br.com.avengers.ports.in.BatalhaResourcePort;
 import br.com.avengers.ports.out.*;
 import br.com.avengers.shared.NegocioException;
@@ -27,7 +29,8 @@ public class BatalhaService implements BatalhaResourcePort {
     private final String topico = "batalha";
 
     @Autowired
-    public BatalhaService(CacheDBPort cacheDBPort, AvengersClientPort avengersClientPort, ViloesClientPort viloesClientPort, MessagePort messagePort, BatalhaRepositoryPort batalhaRepositoryPort) {
+    public BatalhaService(CacheDBPort cacheDBPort, AvengersClientPort avengersClientPort, ViloesClientPort viloesClientPort,
+                          MessagePort messagePort, BatalhaRepositoryPort batalhaRepositoryPort) {
         this.cacheDBPort = cacheDBPort;
         this.avengersClientPort = avengersClientPort;
         this.viloesClientPort = viloesClientPort;
@@ -46,6 +49,8 @@ public class BatalhaService implements BatalhaResourcePort {
 
     @Override
     public JogoResponse criarJogadaUmJogador(UmJogador umJogador) {
+
+        ValidaUmJogador.valida(umJogador);
 
         log.info("Criando jogo");
 
@@ -71,6 +76,8 @@ public class BatalhaService implements BatalhaResourcePort {
 
     @Override
     public JogoResponse criarJogadaDoisJogadores(DoisJogadores doisJogadores) {
+
+        ValidaDoisJogadores.valida(doisJogadores);
 
         //consulta idJogo redis
         DoisJogadores doisJogadoresCache = cacheDBPort.buscarPorIdJogo(doisJogadores.getIdJogo()).orElse(null);
@@ -110,6 +117,7 @@ public class BatalhaService implements BatalhaResourcePort {
                                           ArtefatoEnum artefatoEnum) {
 
         Personagem personagem = (carregar(tipoPersonagemEnum, apelido));
+
         //atribui artefato (se houver)
         if(artefatoEnum != null) {
             personagem.setArtefato(

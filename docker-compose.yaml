@@ -90,6 +90,10 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /var/lib/kafka/data
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      # Limite global de mensagens no broker (2MB)
+      KAFKA_MESSAGE_MAX_BYTES: 2097152
+      # Limite para a replicação interna (deve ser >= message.max.bytes)
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 2097152
 #     Em ambientes de desenvolvimento com apenas um broker, o Kafka 4.0 tenta criar esse tópico
 #     com um fator de replicação padrão de 3, o que falha repetidamente em um cluster de 1 nó
 #     Então usar essas configs em DEV

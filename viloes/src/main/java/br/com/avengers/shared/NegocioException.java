@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class NegocioException extends RuntimeException {
 
-    private HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+    private HttpStatus status = HttpStatus.BAD_REQUEST;
 
     public NegocioException(String message, HttpStatus status) {
         super(message);

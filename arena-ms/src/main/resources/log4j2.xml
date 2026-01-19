@@ -3,11 +3,7 @@
 
     <Properties>
         <Property name="LOG_PATTERN">
-            %d{yyyy-MM-dd HH:mm:ss.SSS}
-            [%t]
-            %-5level
-            traceId=%X{traceId}
-            %c{1} - %msg%n%throwable
+            %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level traceId=%X{traceId} %c{1} - %msg%n%throwable
         </Property>
     </Properties>
 

@@ -99,6 +99,26 @@ public class BatalhaServiceTest {
     }
 
     @Test
+    void deveFalharCriarJogadaUmJogador() {
+
+        UmJogador request = new UmJogador();
+        request.setApelidoLutador1("Thor");
+        request.setTipoPersonagem1(TipoPersonagemEnum.HEROI);
+        request.setTipoPersonagem2(TipoPersonagemEnum.VILAO);
+
+
+        NegocioException ex = Assertions.assertThrows(
+                NegocioException.class,
+                () -> batalhaService.criarJogadaUmJogador(request)
+        );
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+
+        Mockito.verify(messagePort, Mockito.never())
+                .enviarMensagem(ArgumentMatchers.eq("batalha"), ArgumentMatchers.any(Batalha.class));
+    }
+
+    @Test
     void deveCriarJogadaDoisJogadoresQuandoCacheExistir() {
         DoisJogadores cache = new DoisJogadores();
         cache.setIdJogo("JOGO1");
@@ -127,6 +147,29 @@ public class BatalhaServiceTest {
 
         Mockito.verify(messagePort).enviarMensagem(ArgumentMatchers.eq("batalha"), ArgumentMatchers.any(Batalha.class));
         Mockito.verify(cacheDBPort).remover("JOGO1");
+    }
+
+    @Test
+    void deveFalhaCriarJogadaDoisJogadores() {
+        DoisJogadores cache = new DoisJogadores();
+        cache.setIdJogo("JOGO1");
+        cache.setProtocoloId("BATALHA123");
+        cache.setTipoPersonagem(TipoPersonagemEnum.HEROI);
+        cache.setApelidoLutador("Homem-Aranha");
+
+        DoisJogadores request = new DoisJogadores();
+        request.setIdJogo("JOGO1");
+        request.setTipoPersonagem(TipoPersonagemEnum.VILAO);
+
+        NegocioException ex = Assertions.assertThrows(
+                NegocioException.class,
+                () -> batalhaService.criarJogadaDoisJogadores(request)
+        );
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+
+        Mockito.verify(messagePort, Mockito.never()).enviarMensagem(ArgumentMatchers.any(), ArgumentMatchers.any());
+        Mockito.verify(cacheDBPort, Mockito.never()).remover("JOGO1");
     }
 
     @Test

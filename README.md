@@ -129,7 +129,7 @@ Ao final, o sistema registra:
 - MongoDB
 - Postgres
 - Redis
-- Kafka
+- Kafka (com retry, DLQ e re-drive)
 - Docker & Docker Compose 
 
 ## Arquitetura e Padrões de Projeto e mais
@@ -137,10 +137,15 @@ Ao final, o sistema registra:
 - Microsserviços
 - API Gateway
 - Port and Adapters
-- Chain of Responsability (Duas implementações, uma mais Java (API Avengers) e a outra usando mais o Spring(API Viloes)) aplicado nas validações
+- Chain of Responsability (Duas implementações, uma mais Java puro (API Avengers) e a outra usando mais o Spring(API Viloes)) aplicado nas validações
 - Testes Unitários
 
 ## Instruções de subida
+
+- Topicos Kafka:
+
+./kafka-topics.sh --create --topic batalha --bootstrap-server http://localhost:9092 --partitions 3 --replication-factor 1<br />
+./kafka-topics.sh --create --topic batalha.DLQ --bootstrap-server http://localhost:9092 --partitions 3 --replication-factor 1
 
 - Docker compose usar:
 
