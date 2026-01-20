@@ -38,7 +38,11 @@ public class ArenaService implements MessagePort {
             log.info("Batalha finalizada na Arena");
         } catch (NegocioException e) {
             log.error(e.getMessage(), e);
-        } finally {
+        } catch (Exception e) {
+            //demais erros logo e relanço para não atrapalhar retry
+            log.error(e.getMessage(), e);
+            throw e;
+        }finally {
             ThreadContext.clearAll();
         }
     }

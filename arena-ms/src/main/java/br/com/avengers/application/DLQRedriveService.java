@@ -21,6 +21,9 @@ public class DLQRedriveService implements DLQMessagePortIn {
     private final DLQMessagePortOut dlqMessagePortOut;
     private final DLQRepositoryPort dlqRepositoryPort;
 
+    private static final String DLQ_REDRIVE_MANUAL_ATTEMPT = "X-dlq-redrive-manual-attempt";
+    public static final String DLQ_REDRIVE_AUTO_ATTEMPT = "X-dlq-redrive-auto-attempt";
+
     @Autowired
     public DLQRedriveService(DLQMessagePortOut dlqMessagePortOut, DLQRepositoryPort dlqRepositoryPort) {
         this.dlqMessagePortOut = dlqMessagePortOut;
@@ -38,12 +41,14 @@ public class DLQRedriveService implements DLQMessagePortIn {
             // Persistir mensagem para auditoria
             dlqRepositoryPort.save(entity);
 
-            if (isErroRecuperavel(entity.extrairClasseErro(entity.getHeaders()))) {
+            if (deveTentarReenviar(entity.getHeaders(), true)
+                    && isErroRecuperavel(entity.extrairClasseErro(entity.getHeaders()))) {
+
                 // Tentativa automática de reenvio
                 try {
                     dlqMessagePortOut.redriveAutomatico(
                             entity.getPayloadRaw(),
-                            formataHeadersParaArrayBytes(entity.getHeaders())
+                            formataHeadersParaArrayBytes(montarHeaders(entity.getHeaders(), true))
                     );
 
                     entity.setStatus(DlqStatusEnum.REDRIVEN_SUCESSO);
@@ -65,15 +70,18 @@ public class DLQRedriveService implements DLQMessagePortIn {
             DLQMessageDTO entity = dlqRepositoryPort.findByTraceId(id)
                     .orElseThrow();
 
-            dlqMessagePortOut.redriveManual(
-                    jsonCorrigido,
-                    formataHeadersParaArrayBytes(entity.getHeaders())
-            );
-
-            entity.setStatus(DlqStatusEnum.MANUAL);
+            if(deveTentarReenviar(entity.getHeaders(), false)) {
+                dlqMessagePortOut.redriveManual(
+                        jsonCorrigido,
+                        formataHeadersParaArrayBytes(montarHeaders(entity.getHeaders(), false))
+                );
+                entity.setStatus(DlqStatusEnum.MANUAL);
+                dlqRepositoryPort.save(entity);
+            } else {
+                entity.setStatus(DlqStatusEnum.MANUAL_FALHA);
+            }
             dlqRepositoryPort.save(entity);
         }
-
     }
 
     public Map<String, Object> formataHeadersParaArrayBytes(Map<String, String> headers){
@@ -91,5 +99,33 @@ public class DLQRedriveService implements DLQMessagePortIn {
                 (!erro.contains("DeserializationException")
                 && !erro.contains("JsonParseException")
                 && !erro.contains("JsonMappingException") );
+    }
+
+    private Map<String, String> montarHeaders(Map<String, String> headers, boolean auto) {
+
+        Map<String, String> novosHeaders = new HashMap<>();
+        // headers que vieram na mensagem e preciso reenviar (varia de acordo com a regra de negócio)
+        headers.forEach((key, value) -> {
+            if (key.equals("X-Trace-Id")
+                    || key.equals(DLQ_REDRIVE_AUTO_ATTEMPT)
+                    || key.equals(DLQ_REDRIVE_MANUAL_ATTEMPT)) {
+                novosHeaders.put(key, value);
+            }
+        });
+        // adiciono que já passou pela DLQ
+        novosHeaders.put(auto ? DLQ_REDRIVE_AUTO_ATTEMPT : DLQ_REDRIVE_MANUAL_ATTEMPT, "1");
+
+        return novosHeaders;
+    }
+
+    private boolean deveTentarReenviar(Map<String, String> headers, boolean auto){
+
+        if(headers.containsKey(DLQ_REDRIVE_AUTO_ATTEMPT) && auto) {
+            return false;
+        }
+        if(headers.containsKey(DLQ_REDRIVE_MANUAL_ATTEMPT) && !auto){
+            return false;
+        }
+        return true;
     }
 }

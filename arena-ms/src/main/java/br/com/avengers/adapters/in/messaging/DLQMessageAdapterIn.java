@@ -47,6 +47,8 @@ public class DLQMessageAdapterIn {
 
         try (var ctx = CloseableThreadContext.put("traceId", traceId)) {
             dlqMessagePortIn.processaMensagemDLQ(traceId, mensagem);
+        } catch (Exception e){
+            log.error(e.getMessage(), e);
         }
     }
 

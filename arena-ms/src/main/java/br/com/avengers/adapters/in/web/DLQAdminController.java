@@ -41,9 +41,9 @@ public class DLQAdminController {
     }
 
     @PostMapping("/redrive/{id}")
-    public ResponseEntity<Void> redrive(@PathVariable String id,
+    public ResponseEntity<Void> redrive(@PathVariable String traceId,
                                         @RequestBody String jsonCorrigido) {
-        redriveService.redriveManual(id, jsonCorrigido);
+        redriveService.redriveManual(traceId, jsonCorrigido);
         return ResponseEntity.accepted().build();
     }
 }
