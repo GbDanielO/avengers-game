@@ -4,23 +4,22 @@ br.com.avengers                                                                 
 │                                                                                                           <br />
 │──── adapter                                                                                               <br />
 │       ├── DTO                                                                                             <br />
-│       │   └── AvengerDTO.java     // caso request e response usem o mesmo objeto, se não, implementa separado     <br />
+│       │   └── VilaoDTO.java     // caso request e response usem o mesmo objeto, se não, implementa separado     <br />
 │       ├── in                                                                                              <br />
 │       │   ├── web                                                                                         <br />
-│       │   │    └── AvengerResource.java                                                                   <br />
+│       │   │    └── ViloesResource.java                                                                   <br />
 │       │   └── messaging                                                                                   <br />
-│       │        └── AvengerKafkaListner.java   // se fosse necessário ouvir entrada de mensageria          <br />
+│       │        └── KafkaListner.java          // se fosse necessário ouvir entrada de mensageria          <br />
 │       │                                                                                                   <br />
 │       └── out                                                                                             <br />
 │           ├── persistence                                                                                 <br />
 │           │    ├── entity                                                                                 <br />
-│           │    │   └── Avenger.java                        // entidade JPA                                <br />
-│           │    ├── repository                                                                             <br />
-│           │    │   └── SpringDataAvengerRepository.java    // repository do JPA                           <br />
-│           │    └── AvengerRepositoryAdapter.java           // implementa o Port e usa o Repository do JPA     <br />
+│           │    │   └── Vilao.java                        // entidade JPA                                <br />
+│           │    └── VilaoRepository.java                  // repository do JPA                           <br />
+│           │    └── VilaoRepositoryAdapter.java           // implementa o Port e usa o Repository do JPA     <br />
 │           │                                                                                               <br />
 │           ├── messaging                                                                                   <br />
-│           │    └── AvengerKafkaProducer.java                                                              <br />
+│           │    └── KafkaProducer.java         // se fosse necessário produzir mensageria                  <br />
 │           │                                                                                               <br />
 │           └── web     // web client para buscar APIs externas  caso necessário                            <br />
 │                └── RestClientAdapter.java                                                                 <br />
@@ -29,8 +28,15 @@ br.com.avengers                                                                 
 │       ├── model                                                                                           <br />
 │       │    └──   // Não tinha necessidade de objeto aqui                                                  <br />
 │       │          // reaproveitei a entidade JPA                                                           <br />
+│       ├── validation                                                                                      <br />
+│       │    ├── Validador.java                                                                             <br />
+│       │    ├── ValidacaoChain.java          //validações                                                  <br />
+│       │    ├── ValidaApelido.java                                                                         <br />
+│       │    ├── ValidaNome.java                                                                            <br />
+│       │    ├── ValidaDescricao.java                                                                       <br />
+│       │    └── ValidaHistoria.java                                                                        <br />
 │       │                                                                                                   <br />
-│       └── AvengerService.java   <-- @Service AQUI ✔  // projeto mais complexo poderia entrar outras classes aqui      <br />
+│       └── VilaoService.java   <-- @Service AQUI ✔  // projeto mais complexo poderia entrar outras classes aqui      <br />
 │                                                                                                           <br />
 │──── port                                                                                                  <br />
 │       ├── in                                                                                              <br />

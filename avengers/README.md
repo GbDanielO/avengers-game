@@ -16,11 +16,11 @@ br.com.avengers                                                                 
 │           │    ├── entity                                                                                 <br />
 │           │    │   └── Avenger.java                        // entidade JPA                                <br />
 │           │    ├── repository                                                                             <br />
-│           │    │   └── SpringDataAvengerRepository.java    // repository do JPA                           <br />
+│           │    │   └── AvengerRepository.java    // repository do JPA                           <br />
 │           │    └── AvengerRepositoryAdapter.java           // implementa o Port e usa o Repository do JPA     <br />
 │           │                                                                                               <br />
 │           ├── messaging                                                                                   <br />
-│           │    └── AvengerKafkaProducer.java                                                              <br />
+│           │    └── KafkaProducer.java        // se fosse necessario                                                      <br />
 │           │                                                                                               <br />
 │           └── web     // web client para buscar APIs externas  caso necessário                            <br />
 │                └── RestClientAdapter.java                                                                 <br />
@@ -29,6 +29,15 @@ br.com.avengers                                                                 
 │       ├── model                                                                                           <br />
 │       │    └──   // Não tinha necessidade de objeto aqui                                                  <br />
 │       │          // reaproveitei a entidade JPA                                                           <br />
+│       │                                                                                                   <br />
+│       ├── validation                                                                                      <br />
+│       │    ├── Validador.java                                                                             <br />
+│       │    ├── AbstractValidador.java                                                                     <br />
+│       │    ├── ValidacaoChain.java          //validações    (Chain of Responsability classico)            <br />
+│       │    ├── ValidaApelido.java                                                                         <br />
+│       │    ├── ValidaNome.java                                                                            <br />
+│       │    ├── ValidaDescricao.java                                                                       <br />
+│       │    └── ValidaHistoria.java                                                                        <br />
 │       │                                                                                                   <br />
 │       └── AvengerService.java   <-- @Service AQUI ✔  // projeto mais complexo poderia entrar outras classes aqui      <br />
 │                                                                                                           <br />
@@ -61,6 +70,7 @@ br.com.avengers                                                                 
 │    ├── exception                                                                                          <br />
 │          ├── GlobalExceptionHandler.java                                                                  <br />
 │          ├── NegocioException.java                                                                        <br />
+│          ├── ValidacaoException.java                                                                        <br />
 │          └── ResponseError.java                                                                           <br />
 │                                                                                                           <br />
 └── AvengersApplication.java                                                                                <br /><br />
